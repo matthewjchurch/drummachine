@@ -55,3 +55,27 @@ header {
 .highlighted-beat {
     opacity: 100%;
 }
+
+.select-all-container {
+    align-items: center;
+    justify-items: center;
+
+}
+
+.select-all {
+    -webkit-appearance: none;
+    background-color: lightseagreen;
+    border-radius: 3px;
+    height: 40%;
+    width: 40%;
+    opacity: 80%;
+    
+}
+
+.select-all:checked{
+    background-color: red;
+}
+
+.select-all:hover {
+    opacity: 100%;
+}

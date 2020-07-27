@@ -5,15 +5,18 @@ class Deck {
       for (let instrument in instruments){
         for (let beat in beats){
             let current = document.getElementById(`${instruments[instrument]}-wrapper`);
-            current.innerHTML += `<button class="beat beat${beats[beat]}" id="${instruments[instrument]}-beat${beats[beat]}"></button>`;
-            current.innerHTML += `<audio id="${instruments[instrument]}-beat${beats[beat]}-play" src="${instruments[instrument]}.wav" type="audio/wav"></audio>`;
+            current.innerHTML += `<button class="beat ${instruments[instrument]} beat${beats[beat]}" id="${instruments[instrument]}-beat${beats[beat]}"></button>`;
         }
+      }
+      for (let i=0; i<instruments.length; i++){
+          let current = document.getElementById(`${instruments[i]}-wrapper`);
+          current.innerHTML += `<div class="select-all-container"> <input type="checkbox" class="select-all ${instruments[i]}" id="${instruments[i]}-select-all"></input></div>`;
       }
     }
   }
 
 
-function activeBeatListner () {
+function activeBeatListener () {
     let e = document.getElementsByClassName("beat");
     for (let i=0; i<e.length; i++){
         e[i].addEventListener("click", function(){
@@ -26,9 +29,22 @@ function activeBeatListner () {
     }
 };
 
-new Deck();
-activeBeatListner();
+function selectAll(){
+    let e = document.getElementsByClassName("select-all");
+    for (let i=0; i<e.length; i++){
+        e[i].addEventListener("click", function(){
+            let row = document.getElementsByClassName(e[i].classList[1]);
+            if (e[i].checked){
+                $(row).addClass("active-beat");
+            }
+            else {$(row).removeClass("active-beat")}
+        })    
+    }
+}
 
+new Deck();
+activeBeatListener();
+selectAll();
 document.getElementById("kick-the-jams").addEventListener("click", visualScroll);
 
 function visualScroll(){
@@ -77,12 +93,12 @@ function visualScroll(){
     }
 
 function playback(x){
+    const re = /[^-]*/;
     Array.from(x).forEach(i => {
-        const elem = document.getElementById(`${i.id}-play`);
-        
+        const elem = `${i.id.match(re)}`
+        let audioElement = new Audio(`${elem}.wav`);
         if (i.classList.contains("active-beat")){
-            elem.load();
-            elem.play();
+            audioElement.play();
         }
     })
 }
