@@ -41,6 +41,7 @@ header {
 .instrument-name {
     padding: 30% 0;
     color: whitesmoke;
+    width: .6rem;
 }
 
 .beat {

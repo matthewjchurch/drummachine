@@ -46,61 +46,69 @@ new Deck();
 activeBeatListener();
 selectAll();
 document.getElementById("kick-the-jams").addEventListener("click", visualScroll);
+document.getElementById("kick-the-jams").addEventListener("click", changeTheJams);
 
-function visualScroll(){
+function changeTheJams(){
     var player = document.getElementById("kick-the-jams");
     player.innerHTML == "stop the jams" ?
     player.innerHTML = "kick the jams" :
     player.innerHTML = "stop the jams";
+    let bpm = parseInt(document.getElementById("bpm").value, 10);
     
+    if (!isNaN(bpm)){
+        visualScroll();
+    }
+    else { 
+        alert("please enter a tempo");
+        player.innerHTML = "kick the jams";
+    };
+}
+
+function visualScroll(){
     let bpm = parseInt(document.getElementById("bpm").value, 10);
     let interval = (60000 / bpm) / 4;
     let changer = 0;
-
-        if (!isNaN(bpm)){
                     
-            const play = setInterval(function(){
-                    const previous = document.getElementsByClassName("beat");
-                    const current = document.getElementsByClassName(`beat${changer}`);
-                    const state = document.getElementById("kick-the-jams").innerHTML;
+    const play = setInterval(function(){
+            const previous = document.getElementsByClassName("beat");
+            const current = document.getElementsByClassName(`beat${changer}`);
+            const state = document.getElementById("kick-the-jams").innerHTML;
 
-                if (state == "kick the jams"){
-                    clearInterval(play);
-                    $(previous).removeClass("highlighted-beat");
-                    return;
-                }
-                
-                if (changer <= 30){
-                    playback(current);
-                    $(previous).removeClass("highlighted-beat");
-                    $(current).addClass("highlighted-beat");
-                    changer++;
-                }
-
-                else {
-                    playback(current);
-                    $(previous).removeClass("highlighted-beat");
-                    $(current).addClass("highlighted-beat");
-                    changer = 0;
-                }
-
-            }, interval)
+        if (state == "kick the jams"){
+            clearInterval(play);
+            $(previous).removeClass("highlighted-beat");
+            return;
         }
-        else { 
-            alert("please enter a tempo");
-            player.innerHTML = "kick the jams";
-        };
-    }
+        
+        if (changer <= 30){
+            playback(current);
+            $(previous).removeClass("highlighted-beat");
+            $(current).addClass("highlighted-beat");
+            changer++;
+        }
+
+        else {
+            playback(current);
+            $(previous).removeClass("highlighted-beat");
+            $(current).addClass("highlighted-beat");
+            changer = 0;
+        }
+
+    }, interval)
+}
+        
+    
 
 function playback(x){
-    const re = /[^-]*/;
-    Array.from(x).forEach(i => {
-        const elem = `${i.id.match(re)}`
-        let audioElement = new Audio(`${elem}.wav`);
-        if (i.classList.contains("active-beat")){
+    for (let i=0; i<x.length; i++){
+        if (x[i].classList.contains("active-beat")){
+            const re = /[^-]*/;
+            const elem = `${x[i].id.match(re)}`
+            let audioElement = new Audio(`${elem}.wav`);
+            audioElement.volume = document.getElementById(`${elem}-range`).value;
             audioElement.play();
         }
-    })
+    }
 }
 
 
