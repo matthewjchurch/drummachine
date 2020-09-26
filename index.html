@@ -6,7 +6,7 @@
   <meta name="description" content="Simple drum machine">
   <meta name="author" content="Matt Church">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="index.css">
+  <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="data:;base64,=">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -20,32 +20,31 @@
       <div class="instrument-wrapper" id="cymbal-wrapper">
         <div class="instrument-name" id="cymbal-label">
           cymbal
-          <audio id="cymbal" src="cymbal.wav" volume="1"></audio>
+          <audio id="cymbal" src="./samples/" volume="1"></audio>
           <input type="range" id="cymbal-range" class="volume-range" max="1" min="0" step="0.05" value="1"></input>
         </div>
       </div>
       <div class="instrument-wrapper" id="hat-wrapper">
         <div class="instrument-name" id="hat-label">
           hi-hat
-          <audio id="hat" src="hat.wav" volume="1"></audio>
+          <audio id="hat" src="./samples/hat.wav" volume="1"></audio>
           <input type="range" id="hat-range" class="volume-range" max="1" min="0" step="0.05" value="1"></input>
         </div>
       </div>
       <div class="instrument-wrapper" id="snare-wrapper">
         <div class="instrument-name" id="snare-label">
           snare
-          <audio id="snare" src="snare.wav" volume="1"></audio>
+          <audio id="snare" src="./samples/snare.wav" volume="1"></audio>
           <input type="range" id="snare-range" class="volume-range" max="1" min="0" step="0.05" value="1"></input>
         </div>
       </div>
       <div class="instrument-wrapper" id="kick-wrapper">
         <div class="instrument-name" id="kick-label">
           kick
-          <audio id="kick" src="kick.wav" volume="1"></audio>
+          <audio id="kick" src="./samples/kick.wav" volume="1"></audio>
           <input type="range" id="kick-range" class="volume-range" max="1" min="0" step="0.05" value="1"></input>
         </div>
       </div>
     </div>
-  <script src="index.js"></script>
+  <script src="app.js"></script>
 </body>
-
