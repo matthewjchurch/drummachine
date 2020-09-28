@@ -23,7 +23,6 @@ const audioCtx = new AudioContext();
 const pads = document.querySelectorAll('.instrument-wrapper');
 const allPadButtons = document.querySelectorAll('.beat');
 
-// switch aria attribute on click
 allPadButtons.forEach(button => {
     button.addEventListener('click', () => {
         if (button.classList.contains('active-beat')) {
@@ -34,8 +33,7 @@ allPadButtons.forEach(button => {
     }, false);
 });
 
-    // Loading ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    // fetch the audio file and decode the data
+//async functions to get and decode audio
 async function getCymbal(audioContext, filepath) {
     const response = await fetch(filepath);
     const arrayBuffer = await response.arrayBuffer();
@@ -64,15 +62,6 @@ async function getKick(audioContext, filepath) {
     return audioBuffer;
 }
 
-    // create a buffer, plop in data, connect and play -> modify graph here if required
-function playSample(audioContext, audioBuffer) {
-    const sampleSource = audioContext.createBufferSource();
-    sampleSource.buffer = audioBuffer;
-    sampleSource.connect(audioContext.destination)
-    sampleSource.start();
-    return sampleSource;
-}
-
 async function setupCymbal() {
     const filePath = './samples/cymbal.wav';
     const sample = await getSnare(audioCtx, filePath);
@@ -97,7 +86,16 @@ async function setupKick() {
     return sample;
 }
 
-    // Scheduling ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Creates a buffer to handle audio data
+function playSample(audioContext, audioBuffer) {
+    const sampleSource = audioContext.createBufferSource();
+    sampleSource.buffer = audioBuffer;
+    sampleSource.connect(audioContext.destination)
+    sampleSource.start();
+    return sampleSource;
+}
+
+// Scheduling
 const bpmControl = document.querySelector('#bpm');
 
 bpmControl.addEventListener('input', ev => {
@@ -115,14 +113,13 @@ function nextNote() {
 
     nextNoteTime += secondsPerBeat; // Add beat length to last beat time
 
-    // Advance the beat number, wrap to zero
     currentNote++;
     if (currentNote === 32) {
         currentNote = 0;
     }
 }
 
-    // Create a queue for the notes that are to be played, with the current time that we want them to play:
+// Create a queue for notes, with the current time that we want them to play:
 const notesInQueue = [];
 
 function scheduleNote(beatNumber, time) {
@@ -154,7 +151,7 @@ function scheduler() {
     timerID = window.setTimeout(scheduler, lookahead);
 }
 
-    // We also need a draw function to update the UI, so we can see when the beat progresses.
+// Drawing the UI
 
 let lastNoteDrawn = 3;
 function draw() {
@@ -163,7 +160,7 @@ function draw() {
 
     while (notesInQueue.length && notesInQueue[0].time < currentTime) {
         drawNote = notesInQueue[0].note;
-        notesInQueue.splice(0,1);   // remove note from queue
+        notesInQueue.splice(0,1);
     }
 
     // We only need to draw if the note has moved.
@@ -183,22 +180,22 @@ function draw() {
     // const loadingEl = document.querySelector('.loading');
 setupCymbal()
 .then((sample) => {
-    cymbalBuffer = sample; // to be used in our playSample function
+    cymbalBuffer = sample;
 });
 
 setupHat()
 .then((sample) => {
-    hatBuffer = sample; // to be used in our playSample function
+    hatBuffer = sample;
 });
 
 setupSnare()
 .then((sample) => {
-    snareBuffer = sample; // to be used in our playSample function
+    snareBuffer = sample;
 });
 
 setupKick()
 .then((sample) => {
-    kickBuffer = sample; // to be used in our playSample function
+    kickBuffer = sample;
 });
 
 const player = document.querySelector('#kick-the-jams');
@@ -209,7 +206,7 @@ player.addEventListener('click', e => {
     player.innerText = "kick the jams" :
     player.innerText = "stop the jams";
 
-    if (isPlaying) { // start playing
+    if (isPlaying) {
 
         // check if context is in suspended state (autoplay policy)
         if (audioCtx.state === 'suspended') {
